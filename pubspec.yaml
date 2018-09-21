@@ -13,8 +13,5 @@ dependencies:
   diacritic: ^0.1.0
 
 flutter:
-  plugin:
-    androidPackage: rocks.biessek.fluttercountrypicker
-    pluginClass: FlutterCountryPickerPlugin
   assets:
     - assets/flags/
