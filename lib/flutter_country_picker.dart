@@ -8,6 +8,14 @@ export 'country.dart';
 
 typedef Widget CountryBuilder(BuildContext context, Country country);
 
+Future<Country> pickCountry(BuildContext context) {
+  return Navigator.push(context, new MaterialPageRoute(
+    builder: (_) {
+      return new _CountryPickerPage();
+    }
+  ));
+}
+
 class CountryPicker extends StatefulWidget {
   CountryPicker({
     @required this.onChanged,
@@ -27,18 +35,6 @@ class CountryPicker extends StatefulWidget {
 
 class _CountryPickerState extends State<CountryPicker> {
 
-  Future<Country> _pickCountry(BuildContext context) {
-    return Navigator.push(context, new MaterialPageRoute(
-      builder: (_) {
-        return new _CountryPickerPage();
-      }
-    )).then((country){
-      if (country != null) {
-        widget.onChanged(country);
-      }
-    }); 
-  }
-
   Widget get child => widget.country != null ? widget.builder != null ? widget.builder(context, widget.country) : _renderDefaultDisplay(widget.country) : new LimitedBox();
 
   @override
@@ -52,7 +48,11 @@ class _CountryPickerState extends State<CountryPicker> {
         },
         child: child
       ),
-      onTap: () => _pickCountry(context),
+      onTap: () => pickCountry(context).then((country){
+        if (country != null) {
+          widget.onChanged(country);
+        }
+      })
     );
   }
 
